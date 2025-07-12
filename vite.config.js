@@ -9,15 +9,25 @@ export default defineConfig({
     react(),
     tailwindcss(),
     {
-      name: 'copy-redirects',
+      name: "copy-redirects",
       closeBundle: () => {
-        // Copia el archivo _redirects desde public a dist
+        // Copia _redirects
         copyFileSync(
-          resolve(__dirname, 'public/_redirects'),
-          resolve(__dirname, 'dist/_redirects')
+          resolve(__dirname, "public/_redirects"),
+          resolve(__dirname, "dist/_redirects")
         );
-      }
-    }
+
+        // También copia _routes.json si existe
+        try {
+          copyFileSync(
+            resolve(__dirname, "public/_routes.json"),
+            resolve(__dirname, "dist/_routes.json")
+          );
+        } catch (e) {
+          // Si no existe, no pasa nada
+        }
+      },
+    },
   ],
   build: {
     outDir: "dist",
