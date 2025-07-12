@@ -6,8 +6,4 @@ export default defineConfig({
   build: {
     outDir: "dist",
   },
-  server: {
-    // Para permitir rutas SPA como /task, /task/edit/1
-    historyApiFallback: true,
-  },
 });
