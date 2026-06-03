@@ -14,7 +14,7 @@ export const AuthProvider = ({ children }) => {
       const response = await profile();
       setIsAuthenticated(true);
       setUser(response.data);
-    } catch (err) {
+    } catch {
       setIsAuthenticated(false);
       setUser(null);
     } finally {
@@ -23,14 +23,10 @@ export const AuthProvider = ({ children }) => {
   };
 
   const login = async (credentials) => {
-    try {
-      const response = await loginAPI(credentials);
-      setIsAuthenticated(true);
-      setUser(response.data.user || response.data);
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
+    const response = await loginAPI(credentials);
+    setIsAuthenticated(true);
+    setUser(response.data.user || response.data);
+    return response.data;
   };
 
   const logout = async () => {
@@ -45,11 +41,8 @@ export const AuthProvider = ({ children }) => {
   };
 
   const register = async (user) => {
-    try {
-      await registerAPI(user); // ✅ solo lo registra
-    } catch (error) {
-      throw error;
-    }
+    await registerAPI(user);
+    await checkAuth();
   };
   useEffect(() => {
     checkAuth();

@@ -7,8 +7,12 @@ export default function TaskList() {
   const navigate = useNavigate();
 
   const loadTasks = async () => {
-    const res = await getTasks();
-    setTasks(res.data);
+    try {
+      const res = await getTasks();
+      setTasks(res.data);
+    } catch (error) {
+      console.error("Error al cargar tareas:", error);
+    }
   };
 
   useEffect(() => {
@@ -29,14 +33,14 @@ export default function TaskList() {
 
             <div >
               <button
-                onClick={() => navigate(`/tasks/edit/${task.id}`)}
+                onClick={() => navigate(`/task/edit/${task.id}`)}
                 className="mr-2  text-blue-500 hover:text-white border border-blue-500 hover:bg-blue-500 px-3 py-1 rounded-xl"
               >
                 Editar
               </button>
 
               <button
-                onClick={() => deleteTask(task.id).then(loadTasks)}
+                onClick={() => deleteTask(task.id).then(loadTasks).catch((err) => console.error("Error al eliminar:", err))}
                 className="text-red-600 hover:text-white border border-red-600 hover:bg-red-600 transition px-3 py-1 rounded-xl"
               >
                 Eliminar

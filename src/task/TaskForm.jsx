@@ -10,26 +10,32 @@ export default function TaskForm() {
 
   useEffect(() => {
     if (id) {
-      // Si hay ID, estamos editando: obtenemos la tarea
-      getTaskById(id).then((res) => {
-        setTitle(res.data.title);
-        setDescription(res.data.description);
-      });
+      getTaskById(id)
+        .then((res) => {
+          setTitle(res.data.title);
+          setDescription(res.data.description);
+        })
+        .catch((err) => {
+          console.error("Error al obtener tarea:", err);
+          navigate("/task");
+        });
     }
-  }, [id]);
+  }, [id, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (id) {
-      // Modo edición
-      await updateTask(id, { title, description });
-    } else {
-      // Modo creación
-      await createTask({ title, description });
+    try {
+      if (id) {
+        await updateTask(id, { title, description });
+      } else {
+        await createTask({ title, description });
+      }
+      navigate("/task");
+    } catch (error) {
+      console.error("Error al guardar tarea:", error);
+      alert("Error al guardar la tarea");
     }
-
-    navigate("/task");
   };
 
   return (

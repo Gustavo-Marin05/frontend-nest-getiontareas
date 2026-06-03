@@ -5,17 +5,18 @@ import { useNavigate } from "react-router-dom";
 export default function RegisterForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { register } = useAuth(); // ✅ usamos register, no login
+  const [error, setError] = useState("");
+  const { register } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      setError("");
       await register({ email, password });
-      
-      navigate("/"); 
+      navigate("/task");
     } catch (error) {
-      alert("Error al registrarse");
+      setError(error.response?.data?.message || "Error al registrarse");
       console.error(error);
     }
   };
@@ -27,6 +28,10 @@ export default function RegisterForm() {
         className="shadow-lg rounded-2xl p-8 w-full max-w-md space-y-6 bg-gray-600"
       >
         <h2 className="text-2xl font-bold text-center text-white">Registrarse</h2>
+
+        {error && (
+          <p className="text-red-400 text-sm text-center">{error}</p>
+        )}
 
         <input
           type="email"

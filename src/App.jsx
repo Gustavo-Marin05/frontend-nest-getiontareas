@@ -18,7 +18,7 @@ export default function App() {
         <Route element={<ProtectedRoute />}>
           <Route path="/task" element={<TasksPage />} />
           <Route path="/task/create" element={<TaskForm />} />
-          <Route path="/tasks/edit/:id" element={<TaskForm />} />
+          <Route path="/task/edit/:id" element={<TaskForm />} />
         </Route>
       </Routes>
     </BrowserRouter>

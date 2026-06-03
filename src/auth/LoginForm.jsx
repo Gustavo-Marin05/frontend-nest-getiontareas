@@ -5,16 +5,18 @@ import { useNavigate } from "react-router-dom";
 export default function LoginForm({ onSuccess }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const { login } = useAuth();
-  const navigate = useNavigate(); // 👉 para redirigir
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      setError("");
       await login({ email, password });
       onSuccess();
     } catch (error) {
-      alert("Error al iniciar sesión");
+      setError(error.response?.data?.message || "Error al iniciar sesión");
       console.error(error);
     }
   };
@@ -26,6 +28,10 @@ export default function LoginForm({ onSuccess }) {
         className="shadow-lg rounded-2xl p-8 w-full max-w-md space-y-6 bg-gray-600"
       >
         <h2 className="text-2xl font-bold text-center text-white">Iniciar sesión</h2>
+
+        {error && (
+          <p className="text-red-400 text-sm text-center">{error}</p>
+        )}
 
         <input
           type="email"
